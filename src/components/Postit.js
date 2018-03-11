@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 class Postit extends Component {
   static propTypes = {
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
   };
 
   render() {

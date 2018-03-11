@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { pick } from 'lodash';
 import PropTypes from 'prop-types';
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import RaisedButton from 'material-ui/RaisedButton';
+import { addToStack } from '../actions/notes';
 
 import Postit from './Postit';
 
@@ -8,6 +12,12 @@ import './Board.css';
 
 class Board extends Component {
   static propTypes = {
+    stack: PropTypes.arrayOf(
+      PropTypes.shape({
+        id: PropTypes.string,
+      })
+    ).isRequired,
+    addToStack: PropTypes.func,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   };
@@ -17,37 +27,24 @@ class Board extends Component {
     height: '100%',
   };
 
-  state = {
-    postits: [],
-  };
-
-  onAdd = () => {
-    const { postits } = this.state;
-
-    // Create an ID by using the length of postits array
-    this.setState({
-      postits: [...postits, postits.length],
-    });
-  };
-
   render() {
-    const { width, height } = this.props;
+    const { width, height, stack, addToStack } = this.props;
 
     return (
       <div
         className="Board"
         style={{ width, height, backgroundColor: 'lightgray' }}
       >
-        <button onClick={this.onAdd}>Create</button>
-        {this.props.me}
-        {this.state.postits.map(id => <Postit key={id} id={id} />)}
+        <RaisedButton label="Create" onClick={addToStack} />
+        {stack.map(({ id }) => <Postit key={id} id={id} />)}
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({
-  me: state.notes.me,
-});
+const mapStateToProps = state => pick(state.notes, 'stack');
 
-export default connect(mapStateToProps, null)(Board);
+const mapDispatchToProps = dispatch =>
+  bindActionCreators({ addToStack }, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Board);

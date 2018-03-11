@@ -1,11 +1,16 @@
+import * as actionTypes from '../constants/actionTypes';
+
 const initialState = {
-  me: 'Vanik',
+  stack: [],
 };
 
 function notes(state = initialState, action) {
   switch (action.type) {
-    case 'ADD_TODO':
-      return state.concat([action.text]);
+    case actionTypes.ADD_TO_STACK:
+      return {
+        ...state,
+        stack: [...state.stack, action.payload],
+      };
     default:
       return state;
   }
