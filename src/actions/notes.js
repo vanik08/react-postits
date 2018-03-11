@@ -18,3 +18,14 @@ export function changePosition(payload) {
     payload,
   };
 }
+
+export function openPostit(id) {
+  return {
+    type: actionTypes.OPEN_POSTIT,
+    payload: {
+      id,
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+    },
+  };
+}

@@ -9,6 +9,8 @@ import './Postit.css';
 const Postit = ({ id, x, y, ...props }) => {
   return props.connectDragSource(
     <div
+      onClick={props.onClick}
+      className={`postit-hook ${props.isDragging ? 'dragging' : ''}`}
       style={{
         position: 'absolute',
         top: y,
@@ -17,7 +19,7 @@ const Postit = ({ id, x, y, ...props }) => {
         opacity: props.isDragging ? 0.5 : 1,
       }}
     >
-      <Paper className="Postit">{id}</Paper>
+      <Paper className="Postit">Note: {id}</Paper>
     </div>
   );
 };
@@ -26,6 +28,7 @@ Postit.propTypes = {
   id: PropTypes.string.isRequired,
   x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
+  onClick: PropTypes.func,
   isDragging: PropTypes.bool.isRequired,
   connectDragSource: PropTypes.func.isRequired,
   changePosition: PropTypes.func.isRequired,

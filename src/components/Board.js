@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-import { addToStack, changePosition } from '../actions/notes';
+import { addToStack, changePosition, openPostit } from '../actions/notes';
 
 import Postit from './Postit';
 
@@ -22,6 +22,7 @@ class Board extends Component {
     ).isRequired,
     addToStack: PropTypes.func,
     changePosition: PropTypes.func,
+    openPostit: PropTypes.func,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   };
@@ -29,6 +30,10 @@ class Board extends Component {
   static defaultProps = {
     width: '100%',
     height: '100%',
+  };
+
+  onSelect = id => {
+    this.props.openPostit(id);
   };
 
   render() {
@@ -43,7 +48,12 @@ class Board extends Component {
           <ContentAdd />
         </FloatingActionButton>
         {stack.map(props => (
-          <Postit key={props.id} {...props} changePosition={changePosition} />
+          <Postit
+            key={props.id}
+            onClick={() => this.onSelect(props.id)}
+            changePosition={changePosition}
+            {...props}
+          />
         ))}
       </div>
     );
@@ -53,6 +63,6 @@ class Board extends Component {
 const mapStateToProps = state => pick(state.notes, 'stack');
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ addToStack, changePosition }, dispatch);
+  bindActionCreators({ addToStack, changePosition, openPostit }, dispatch);
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(Board);

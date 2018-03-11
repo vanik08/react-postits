@@ -3,8 +3,13 @@
   height: 200px;
   background-color: #ffea00 !important;
   /* margin: 10px; */
+  padding: 5px;
 }
 
 .Postit:hover {
+  cursor: pointer;
+}
+
+.Postit.dragging {
   cursor: move;
 }
