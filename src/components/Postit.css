@@ -1,0 +1,10 @@
+.Postit {
+  width: 200px;
+  height: 200px;
+  background-color: #ffea00 !important;
+  margin: 10px;
+}
+
+.Postit:hover {
+  cursor: move;
+}
