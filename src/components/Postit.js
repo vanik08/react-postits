@@ -13,6 +13,7 @@ const Postit = ({ id, x, y, ...props }) => {
         position: 'absolute',
         top: y,
         left: x,
+        zIndex: props.zIndex,
         opacity: props.isDragging ? 0.5 : 1,
       }}
     >
