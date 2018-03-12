@@ -2,7 +2,7 @@ import * as actionTypes from '../constants/actionTypes';
 import pick from 'lodash/pick';
 
 const initialState = {
-  closePostit: null,
+  closePostitId: null,
   openPostitId: null,
   stack: [],
   oldCoords: {},
@@ -29,16 +29,6 @@ function getNewCoordsFromClose(state, action) {
 
   newStack[idx].x = oldCoords.x;
   newStack[idx].y = oldCoords.y;
-
-  return newStack;
-}
-
-function getCloseCoords(state, action) {
-  const idx = state.stack.findIndex(itm => itm.id === state.closePostit);
-  const newStack = [...state.stack];
-
-  newStack[idx].x = state.oldCoords[state.closePostit].x;
-  newStack[idx].y = state.oldCoords[state.closePostit].y;
 
   return newStack;
 }
@@ -70,13 +60,13 @@ function notes(state = initialState, action) {
       return {
         ...state,
         openPostitId: null,
-        closePostit: null,
+        closePostitId: null,
         stack: getNewCoords(state, action),
       };
     case actionTypes.CLOSE_POSTIT:
       return {
         ...state,
-        closePostit: action.payload.id,
+        closePostitId: action.payload.id,
         openPostitId: null,
         stack: getNewCoordsFromClose(state, action),
       };
