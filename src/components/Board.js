@@ -59,9 +59,6 @@ class Board extends Component {
       closePostitId,
     } = this.props;
 
-    console.log('Open', openPostitId);
-    console.log('Close', closePostitId);
-
     return (
       <div className="Board" style={{ width, height }}>
         <FloatingActionButton label="Create" onClick={addToStack}>

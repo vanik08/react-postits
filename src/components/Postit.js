@@ -20,13 +20,15 @@ const Postit = ({ id, x, y, ...props }) => {
         position: 'absolute',
         top: y,
         left: x,
-        transform: props.open ? 'rotateY(360deg)' : 'rotateY(0deg)',
+        transform: props.open
+          ? 'rotateY(360deg) scale(1.35)'
+          : 'rotateY(0deg) scale(1)',
         zIndex: props.fadeout ? 1 : props.zIndex,
         opacity: props.isDragging ? 0 : 1,
         transition:
           (props.open || props.close) &&
           !props.isDragging &&
-          'transform 200ms linear, top 500ms ease-in, left 500ms ease-in',
+          'transform 400ms linear, top 500ms ease-in 150ms, left 500ms ease-in 150ms',
       }}
     >
       <Paper className="Postit">
