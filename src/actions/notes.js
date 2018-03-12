@@ -29,3 +29,12 @@ export function openPostit(id) {
     },
   };
 }
+
+export function closePostit(id) {
+  return {
+    type: actionTypes.CLOSE_POSTIT,
+    payload: {
+      id,
+    },
+  };
+}

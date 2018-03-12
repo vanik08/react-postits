@@ -1,4 +1,5 @@
 import * as actionTypes from '../constants/actionTypes';
+import pick from 'lodash/pick';
 
 const initialState = {
   closePostit: null,
@@ -19,6 +20,35 @@ function getNewCoords(state, action) {
   newStack[idx].zIndex = currZ;
 
   return newStack;
+}
+
+function getNewCoordsFromClose(state, action) {
+  const idx = state.stack.findIndex(itm => itm.id === action.payload.id);
+  const oldCoords = state.oldCoords[action.payload.id];
+  const newStack = [...state.stack];
+
+  newStack[idx].x = oldCoords.x;
+  newStack[idx].y = oldCoords.y;
+
+  return newStack;
+}
+
+function getCloseCoords(state, action) {
+  const idx = state.stack.findIndex(itm => itm.id === state.closePostit);
+  const newStack = [...state.stack];
+
+  newStack[idx].x = state.oldCoords[state.closePostit].x;
+  newStack[idx].y = state.oldCoords[state.closePostit].y;
+
+  return newStack;
+}
+
+function getOldCoords(state, action) {
+  const idx = state.stack.findIndex(itm => itm.id === action.payload.id);
+  const newStack = [...state.stack];
+  const oldCoords = pick(newStack[idx], 'x', 'y');
+
+  return oldCoords;
 }
 
 function notes(state = initialState, action) {
@@ -43,16 +73,23 @@ function notes(state = initialState, action) {
         closePostit: null,
         stack: getNewCoords(state, action),
       };
+    case actionTypes.CLOSE_POSTIT:
+      return {
+        ...state,
+        closePostit: action.payload.id,
+        openPostitId: null,
+        stack: getNewCoordsFromClose(state, action),
+      };
     case actionTypes.OPEN_POSTIT:
       return {
         ...state,
-        closePostit:
-          state.openPostitId === action.payload.id ? action.payload.id : null,
-        openPostitId:
-          state.openPostitId !== action.payload.id ? action.payload.id : null,
+        openPostitId: action.payload.id,
+        oldCoords: {
+          ...state.oldCoords,
+          [action.payload.id]: getOldCoords(state, action),
+        },
         stack: getNewCoords(state, action),
       };
-
     default:
       return state;
   }

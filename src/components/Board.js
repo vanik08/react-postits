@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { pick } from 'lodash';
+import pick from 'lodash/pick';
 import { compose } from 'recompose';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
@@ -7,7 +7,12 @@ import { connect } from 'react-redux';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-import { addToStack, changePosition, openPostit } from '../actions/notes';
+import {
+  addToStack,
+  changePosition,
+  openPostit,
+  closePostit,
+} from '../actions/notes';
 
 import Postit from './Postit';
 
@@ -24,7 +29,7 @@ class Board extends Component {
     changePosition: PropTypes.func,
     openPostit: PropTypes.func,
     openPostitId: PropTypes.string,
-    closePostit: PropTypes.string,
+    closePostit: PropTypes.func,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   };
@@ -34,8 +39,12 @@ class Board extends Component {
     height: '100%',
   };
 
-  onSelect = id => {
-    this.props.openPostit(id);
+  onSelect = (id, open) => {
+    if (!open) {
+      this.props.openPostit(id);
+    } else {
+      this.props.closePostit(id);
+    }
   };
 
   render() {
@@ -58,7 +67,7 @@ class Board extends Component {
         {stack.map(props => (
           <Postit
             key={props.id}
-            onClick={() => this.onSelect(props.id)}
+            onClick={() => this.onSelect(props.id, props.id === openPostitId)}
             changePosition={changePosition}
             open={props.id === openPostitId}
             close={props.id === closePostit}
@@ -71,10 +80,12 @@ class Board extends Component {
   }
 }
 
-const mapStateToProps = state =>
-  pick(state.notes, 'stack', 'openPostitId', 'closePostit');
+const mapStateToProps = state => pick(state.notes, 'stack', 'openPostitId');
 
 const mapDispatchToProps = dispatch =>
-  bindActionCreators({ addToStack, changePosition, openPostit }, dispatch);
+  bindActionCreators(
+    { addToStack, changePosition, openPostit, closePostit },
+    dispatch
+  );
 
 export default compose(connect(mapStateToProps, mapDispatchToProps))(Board);
