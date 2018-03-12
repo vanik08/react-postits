@@ -21,7 +21,7 @@ const Postit = ({ id, x, y, ...props }) => {
         top: y,
         left: x,
         transform: props.open
-          ? 'rotateY(360deg) scale(1.35)'
+          ? 'rotateY(360deg) scale(1.5)'
           : 'rotateY(0deg) scale(1)',
         zIndex: props.fadeout ? 1 : props.zIndex,
         opacity: props.isDragging ? 0 : 1,
