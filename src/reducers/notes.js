@@ -1,8 +1,10 @@
 import * as actionTypes from '../constants/actionTypes';
 
 const initialState = {
+  closePostit: null,
   openPostitId: null,
   stack: [],
+  oldCoords: {},
 };
 
 let currZ = 0;
@@ -38,11 +40,14 @@ function notes(state = initialState, action) {
       return {
         ...state,
         openPostitId: null,
+        closePostit: null,
         stack: getNewCoords(state, action),
       };
     case actionTypes.OPEN_POSTIT:
       return {
         ...state,
+        closePostit:
+          state.openPostitId === action.payload.id ? action.payload.id : null,
         openPostitId:
           state.openPostitId !== action.payload.id ? action.payload.id : null,
         stack: getNewCoords(state, action),

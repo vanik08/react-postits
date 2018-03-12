@@ -24,6 +24,7 @@ class Board extends Component {
     changePosition: PropTypes.func,
     openPostit: PropTypes.func,
     openPostitId: PropTypes.string,
+    closePostit: PropTypes.string,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   };
@@ -45,6 +46,7 @@ class Board extends Component {
       addToStack,
       changePosition,
       openPostitId,
+      closePostit,
     } = this.props;
 
     return (
@@ -59,6 +61,7 @@ class Board extends Component {
             onClick={() => this.onSelect(props.id)}
             changePosition={changePosition}
             open={props.id === openPostitId}
+            close={props.id === closePostit}
             fadeout={openPostitId && props.id !== openPostitId}
             {...props}
           />
@@ -68,7 +71,8 @@ class Board extends Component {
   }
 }
 
-const mapStateToProps = state => pick(state.notes, 'stack', 'openPostitId');
+const mapStateToProps = state =>
+  pick(state.notes, 'stack', 'openPostitId', 'closePostit');
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ addToStack, changePosition, openPostit }, dispatch);
