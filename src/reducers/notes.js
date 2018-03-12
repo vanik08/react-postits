@@ -37,12 +37,14 @@ function notes(state = initialState, action) {
     case actionTypes.CHANGE_POSITION:
       return {
         ...state,
+        openPostitId: null,
         stack: getNewCoords(state, action),
       };
     case actionTypes.OPEN_POSTIT:
       return {
         ...state,
-        openPostitId: action.payload.id,
+        openPostitId:
+          state.openPostitId !== action.payload.id ? action.payload.id : null,
         stack: getNewCoords(state, action),
       };
 

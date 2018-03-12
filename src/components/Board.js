@@ -23,6 +23,7 @@ class Board extends Component {
     addToStack: PropTypes.func,
     changePosition: PropTypes.func,
     openPostit: PropTypes.func,
+    openPostitId: PropTypes.string,
     width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
     height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   };
@@ -37,21 +38,28 @@ class Board extends Component {
   };
 
   render() {
-    const { width, height, stack, addToStack, changePosition } = this.props;
+    const {
+      width,
+      height,
+      stack,
+      addToStack,
+      changePosition,
+      openPostitId,
+    } = this.props;
 
     return (
-      <div
-        className="Board"
-        style={{ width, height, backgroundColor: 'lightgray' }}
-      >
+      <div className="Board" style={{ width, height }}>
         <FloatingActionButton label="Create" onClick={addToStack}>
           <ContentAdd />
         </FloatingActionButton>
+        {openPostitId && <div className="backdrop" />}
         {stack.map(props => (
           <Postit
             key={props.id}
             onClick={() => this.onSelect(props.id)}
             changePosition={changePosition}
+            open={props.id === openPostitId}
+            fadeout={openPostitId && props.id !== openPostitId}
             {...props}
           />
         ))}
@@ -60,7 +68,7 @@ class Board extends Component {
   }
 }
 
-const mapStateToProps = state => pick(state.notes, 'stack');
+const mapStateToProps = state => pick(state.notes, 'stack', 'openPostitId');
 
 const mapDispatchToProps = dispatch =>
   bindActionCreators({ addToStack, changePosition, openPostit }, dispatch);
